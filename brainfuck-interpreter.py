@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 def execute_brainfuck(program: str):
 
@@ -75,3 +76,5 @@ while(line != ""):
     line=input()
 
 execute_brainfuck(program)
+
+time.sleep(5)
