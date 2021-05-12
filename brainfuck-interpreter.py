@@ -1,11 +1,12 @@
 import numpy as np
 import time
 
+
 def execute_brainfuck(program: str):
 
     programpointer = 0  # The index of the current instruction
 
-    data = np.full(100000000,0)
+    data = np.full(100000000, 0)
     datapointer = 0  # The number of the cell that is currently pointed to
 
     print("Now executing...\n\n")
@@ -29,7 +30,7 @@ def execute_brainfuck(program: str):
             programpointer += 1
 
         elif (currentInstruction == "."):  # Write
-            print(chr(data[datapointer]),end="")
+            print(chr(data[datapointer]), end="")
             programpointer += 1
 
         elif (currentInstruction == ","):  # Read
@@ -43,8 +44,15 @@ def execute_brainfuck(program: str):
 
         if (currentInstruction == "["):  # Loops
             if(data[datapointer] == 0):
-                # Now, find the next ] and jump to the command after it
-                while (program[programpointer] != "]"):
+                # Now, find the corresponding ] and jump to the command after it
+                opens = 0
+                while (True):  # The loop will be broken out of with break.
+                    if(program[programpointer] == "["):
+                        opens += 1
+                    if(program[programpointer] == "]"):
+                        opens -= 1
+                        if(opens == 0):
+                            break
                     programpointer += 1
                 programpointer += 1
             else:
@@ -53,8 +61,15 @@ def execute_brainfuck(program: str):
 
         elif (currentInstruction == "]"):
             if(data[datapointer] != 0):
-                # Now find the last [ and jump to the command after it
-                while(program[programpointer] != "["):
+                # Now find the corresponding [ and jump to the command after it
+                opens = 0
+                while(True):
+                    if(program[programpointer] == "]"):
+                        opens += 1
+                    if(program[programpointer] == "["):
+                        opens -= 1
+                        if(opens == 0):
+                            break
                     programpointer -= 1
                 programpointer += 1
             else:
@@ -67,13 +82,14 @@ def execute_brainfuck(program: str):
             print("Stopping execution.")
             break
 
+
 print("Please input your Brainfuck program:")
 
 line = input()
 program = ""
 while(line != ""):
-    program+=line
-    line=input()
+    program += line
+    line = input()
 
 execute_brainfuck(program)
 
